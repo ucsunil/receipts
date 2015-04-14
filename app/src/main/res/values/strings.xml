@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">amex-receipts</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="add">Add Item</string>
+    <string name="clear">Clear Cart</string>
+    <string name="show">Show Receipt</string>
+
+    <string name="empty_message">Your cart is empty. What would you like to do?</string>
+    <string name="message">What would you like to do with your cart?</string>
+
+    <string name="item">Item</string>
+    <string name="qty">Qty.</string>
+    <string name="cost">Cost</string>
+    <string name="imported">Imported?</string>
+</resources>
