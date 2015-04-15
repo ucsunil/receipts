@@ -35,6 +35,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/quantity"
+            android:inputType="number"
             android:layout_weight="3"
             android:layout_width="0dip"
             android:layout_height="wrap_content" />
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/cost"
+            android:inputType="numberDecimal"
             android:layout_weight="3"
             android:layout_width="0dip"
             android:layout_height="wrap_content" />
@@ -69,7 +71,7 @@
             android:layout_height="wrap_content" />
         <Spinner
             android:id="@+id/type"
-            android:entries="@array/isImported"
+            android:entries="@array/typeArray"
             android:layout_weight="1"
             android:layout_width="0dip"
             android:layout_height="wrap_content"/>

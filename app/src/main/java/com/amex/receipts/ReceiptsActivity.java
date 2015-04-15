@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.amex.receipts.adapters.ItemsAdapter;
 import com.amex.receipts.fragments.AddItemFragment;
+import com.amex.receipts.fragments.ShowReceiptFragment;
 import com.amex.receipts.models.Item;
 
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 public class ReceiptsActivity extends Activity implements View.OnClickListener, AddItemFragment.OnItemSave{
 
     private AddItemFragment addItem;
+    private ShowReceiptFragment showReceipt;
     private Button add, clear, calculate;
     private ListView listView;
 
@@ -55,8 +57,8 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
             clear.setEnabled(false);
             calculate.setEnabled(false);
         } else {
-            clear.setEnabled(false);
-            calculate.setEnabled(false);
+            clear.setEnabled(true);
+            calculate.setEnabled(true);
         }
     }
 
@@ -94,7 +96,12 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
                 deleteCart();
                 break;
             case R.id.calculate:
-                //TO DO
+                String receipt = calculateCart();
+                Bundle bundle = new Bundle();
+                bundle.putString("receipt", receipt);
+
+                showReceipt = ShowReceiptFragment.getInstance(bundle);
+                showReceipt.show(getFragmentManager(), null);
                 break;
         }
     }

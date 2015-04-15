@@ -56,8 +56,8 @@ public class ItemsAdapter extends BaseAdapter {
         itemText.setText(item.getItem());
         quantity.setText(String.valueOf(item.getQuantity()));
         cost.setText(String.valueOf(item.getCost()));
-        type.setText(String.valueOf(item.isExempt()));
-        imported.setText(String.valueOf(item.isImported()));
+        type.setText(item.isExempt()? "Yes" : "No");
+        imported.setText(item.isImported()? "Yes" : "No");
 
         return row;
     }
