@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dip" />
 
+    <include layout="@layout/list_header_row" />
     <ListView
         android:id="@+id/list"
         android:layout_weight="95"

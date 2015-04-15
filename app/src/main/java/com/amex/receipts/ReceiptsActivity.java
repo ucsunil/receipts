@@ -1,25 +1,30 @@
 package com.amex.receipts;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
+import com.amex.receipts.adapters.ItemsAdapter;
 import com.amex.receipts.fragments.AddItemFragment;
 import com.amex.receipts.models.Item;
 
 import java.util.ArrayList;
 
 
-public class ReceiptsActivity extends Activity implements View.OnClickListener{
+public class ReceiptsActivity extends Activity implements View.OnClickListener, AddItemFragment.OnItemSave{
 
     private AddItemFragment addItem;
     private Button add, clear, calculate;
+    private ListView listView;
 
     private ArrayList<Item> items;
+    private ItemsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,9 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener{
         add.setOnClickListener(this);
         clear.setOnClickListener(this);
         calculate.setOnClickListener(this);
+
+        listView = (ListView) findViewById(R.id.list);
+        items = new ArrayList<Item>();
     }
 
 
@@ -65,11 +73,57 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener{
                 addItem.show(getFragmentManager(), null);
                 break;
             case R.id.clear:
-                // TO DO
+                deleteCart();
                 break;
             case R.id.calculate:
                 //TO DO
                 break;
+        }
+    }
+
+    @Override
+    public void onItemSaved(Item item) {
+        new AddItemTask().execute(item);
+    }
+
+    private void deleteCart() {
+        new DeleteCartTask().execute();
+    }
+
+    public class AddItemTask extends AsyncTask<Item, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Item... itemList) {
+            Item item = itemList[0];
+            items.add(item);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            adapter.notifyDataSetChanged();
+            if(!clear.isEnabled()) {
+                clear.setEnabled(true);
+                calculate.setEnabled(true);
+            }
+        }
+    }
+
+    public class DeleteCartTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... unused) {
+            items.clear();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            adapter.notifyDataSetChanged();
+            if(clear.isEnabled()) {
+                clear.setEnabled(false);
+                calculate.setEnabled(false);
+            }
         }
     }
 }
