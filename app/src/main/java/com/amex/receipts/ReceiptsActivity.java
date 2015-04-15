@@ -15,6 +15,8 @@ import com.amex.receipts.adapters.ItemsAdapter;
 import com.amex.receipts.fragments.AddItemFragment;
 import com.amex.receipts.models.Item;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 
@@ -106,7 +108,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         new DeleteCartTask().execute();
     }
 
-    private void calculateCart() {
+    private String calculateCart() {
         double totalPrice = 0;
         double totalTax = 0;
 
@@ -120,7 +122,6 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
             double itemSalesTax = 0;
             double itemImportTax = 0;
             double itemTax = 0;
-            double totalCost = 0;
 
             String name = item.getItem();
             int quantity = item.getQuantity();
@@ -134,8 +135,32 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
             if(imported) {
                 itemImportTax = importTax*quantity*cost;
             }
-            itemTax = itemSalesTax + itemImportTax;
+            double actualItemTax = itemSalesTax + itemImportTax;
+            itemTax = roundUpToNearestFiveCents(actualItemTax);
+            double actualItemPrice = (quantity*cost) + itemTax;
+            double roundedItemPrice = roundPriceToTwoPlaces(actualItemPrice);
+
+            totalTax = totalTax + itemTax;
+            totalPrice = totalPrice + roundedItemPrice;
+
+            builder.append(quantity).append(" ").append(imported? "imported" : "")
+                    .append(" ").append(name).append(": ").append(roundedItemPrice)
+                    .append("\n");
         }
+        builder.append("Sales Taxes: ").append(totalTax).append("\n")
+                .append("Total: ").append(totalPrice);
+        return builder.toString();
+    }
+
+    private double roundPriceToTwoPlaces(double input) {
+        BigDecimal value = new BigDecimal(String.valueOf(input));
+        return value.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+    }
+
+    private double roundUpToNearestFiveCents(double input) {
+        BigDecimal value = new BigDecimal(String.valueOf(input));
+        BigDecimal result = new BigDecimal(Math.ceil(value.doubleValue()*20)/20);
+        return result.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public class AddItemTask extends AsyncTask<Item, Void, Void> {
