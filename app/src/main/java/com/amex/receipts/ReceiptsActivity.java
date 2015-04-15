@@ -5,14 +5,33 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.amex.receipts.fragments.AddItemFragment;
+import com.amex.receipts.models.Item;
+
+import java.util.ArrayList;
 
 
-public class ReceiptsActivity extends Activity {
+public class ReceiptsActivity extends Activity implements View.OnClickListener{
+
+    private AddItemFragment addItem;
+    private Button add, clear, calculate;
+
+    private ArrayList<Item> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipts);
+
+        add = (Button) findViewById(R.id.add);
+        clear = (Button) findViewById(R.id.clear);
+        calculate = (Button) findViewById(R.id.calculate);
+        add.setOnClickListener(this);
+        clear.setOnClickListener(this);
+        calculate.setOnClickListener(this);
     }
 
 
@@ -36,5 +55,21 @@ public class ReceiptsActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.add:
+                addItem = AddItemFragment.getInstance();
+                addItem.show(getFragmentManager(), null);
+                break;
+            case R.id.clear:
+                // TO DO
+                break;
+            case R.id.calculate:
+                //TO DO
+                break;
+        }
     }
 }

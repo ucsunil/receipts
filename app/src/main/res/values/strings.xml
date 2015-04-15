@@ -13,6 +13,15 @@
 
     <string name="item">Item</string>
     <string name="qty">Qty.</string>
+    <string name="quantity">Quantity</string>
     <string name="cost">Cost</string>
     <string name="imported">Imported?</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="isImported">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>
