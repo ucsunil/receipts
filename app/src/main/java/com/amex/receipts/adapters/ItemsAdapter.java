@@ -50,11 +50,13 @@ public class ItemsAdapter extends BaseAdapter {
         TextView itemText = (TextView) row.findViewById(R.id.item);
         TextView quantity = (TextView) row.findViewById(R.id.qty);
         TextView cost = (TextView) row.findViewById(R.id.cost);
+        TextView type = (TextView) row.findViewById(R.id.type);
         TextView imported = (TextView) row.findViewById(R.id.imported);
 
         itemText.setText(item.getItem());
-        quantity.setText(item.getQuantity());
+        quantity.setText(String.valueOf(item.getQuantity()));
         cost.setText(String.valueOf(item.getCost()));
+        type.setText(String.valueOf(item.isExempt()));
         imported.setText(String.valueOf(item.isImported()));
 
         return row;

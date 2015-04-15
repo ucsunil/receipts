@@ -9,6 +9,7 @@ public class Item {
     private int quantity;
     private double cost;
     private boolean imported;
+    private boolean exempt;
 
     public String getItem() {
         return item;
@@ -26,6 +27,10 @@ public class Item {
         return imported;
     }
 
+    public boolean isExempt() {
+        return exempt;
+    }
+
     public void setItem(String item) {
         this.item = item;
     }
@@ -40,5 +45,9 @@ public class Item {
 
     public void setImported(boolean imported) {
         this.imported = imported;
+    }
+
+    public void setExempt(boolean exempt) {
+        this.exempt = exempt;
     }
 }

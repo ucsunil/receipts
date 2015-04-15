@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.amex.receipts.adapters.ItemsAdapter;
 import com.amex.receipts.fragments.AddItemFragment;
@@ -40,6 +41,21 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
 
         listView = (ListView) findViewById(R.id.list);
         items = new ArrayList<Item>();
+        adapter = new ItemsAdapter(this, items);
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(items.size() == 0) {
+            clear.setEnabled(false);
+            calculate.setEnabled(false);
+        } else {
+            clear.setEnabled(false);
+            calculate.setEnabled(false);
+        }
     }
 
 
@@ -90,6 +106,38 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         new DeleteCartTask().execute();
     }
 
+    private void calculateCart() {
+        double totalPrice = 0;
+        double totalTax = 0;
+
+        double importTax = 0.05;
+        double salesTax = 0.1;
+        StringBuilder builder = new StringBuilder();
+
+        for(int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+
+            double itemSalesTax = 0;
+            double itemImportTax = 0;
+            double itemTax = 0;
+            double totalCost = 0;
+
+            String name = item.getItem();
+            int quantity = item.getQuantity();
+            double cost = item.getCost();
+            boolean exempt = item.isExempt();
+            boolean imported = item.isImported();
+
+            if(!exempt) {
+                itemSalesTax = salesTax*quantity*cost;
+            }
+            if(imported) {
+                itemImportTax = importTax*quantity*cost;
+            }
+            itemTax = itemSalesTax + itemImportTax;
+        }
+    }
+
     public class AddItemTask extends AsyncTask<Item, Void, Void> {
 
         @Override
@@ -102,6 +150,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         @Override
         protected void onPostExecute(Void unused) {
             adapter.notifyDataSetChanged();
+            Toast.makeText(ReceiptsActivity.this, getString(R.string.item_added), Toast.LENGTH_SHORT).show();
             if(!clear.isEnabled()) {
                 clear.setEnabled(true);
                 calculate.setEnabled(true);
@@ -120,6 +169,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         @Override
         protected void onPostExecute(Void unused) {
             adapter.notifyDataSetChanged();
+            Toast.makeText(ReceiptsActivity.this, getString(R.string.cart_cleared), Toast.LENGTH_SHORT).show();
             if(clear.isEnabled()) {
                 clear.setEnabled(false);
                 calculate.setEnabled(false);

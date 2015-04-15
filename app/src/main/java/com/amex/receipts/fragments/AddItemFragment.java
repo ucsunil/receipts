@@ -23,7 +23,7 @@ public class AddItemFragment extends DialogFragment implements View.OnClickListe
     private static final String HEADER = "Add New Item";
 
     private EditText itemText, quantity, cost;
-    private Spinner imported;
+    private Spinner type, imported;
     private Button ok, cancel;
 
     private OnItemSave itemSave;
@@ -54,6 +54,7 @@ public class AddItemFragment extends DialogFragment implements View.OnClickListe
         itemText = (EditText) view.findViewById(R.id.item);
         quantity = (EditText) view.findViewById(R.id.quantity);
         cost = (EditText) view.findViewById(R.id.cost);
+        type = (Spinner) view.findViewById(R.id.type);
         imported = (Spinner) view.findViewById(R.id.imported);
 
         ok = (Button) view.findViewById(R.id.ok);
@@ -78,8 +79,14 @@ public class AddItemFragment extends DialogFragment implements View.OnClickListe
                 item.setItem(itemText.getText().toString());
                 item.setQuantity(Integer.parseInt(quantity.getText().toString()));
                 item.setCost(Double.parseDouble(cost.getText().toString()));
-                item.setImported(Boolean.valueOf(imported.getSelectedItem().toString()));
+                boolean isExempt = imported.getSelectedItem().toString().equals("Others") ?
+                                        false : true;
+                item.setExempt(isExempt);
+                boolean isImport = imported.getSelectedItem().toString().equals("Yes") ?
+                                        true : false;
+                item.setImported(isImport);
                 itemSave.onItemSaved(item);
+                this.dismiss();
                 break;
             case R.id.cancel:
                 this.dismiss();
