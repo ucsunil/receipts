@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.amex.receipts.adapters.ItemsAdapter;
 import com.amex.receipts.fragments.AddItemFragment;
 import com.amex.receipts.fragments.ShowReceiptFragment;
+import com.amex.receipts.helpers.ActionModeHelper;
 import com.amex.receipts.models.Item;
 
 import java.math.BigDecimal;
@@ -22,7 +24,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
-public class ReceiptsActivity extends Activity implements View.OnClickListener, AddItemFragment.OnItemSave{
+public class ReceiptsActivity extends Activity implements View.OnClickListener, AddItemFragment.OnItemSaveListener{
 
     private AddItemFragment addItem;
     private ShowReceiptFragment showReceipt;
@@ -48,6 +50,10 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         items = new ArrayList<Item>();
         adapter = new ItemsAdapter(this, items);
         listView.setAdapter(adapter);
+
+        listView.setLongClickable(true);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setOnItemLongClickListener(new ActionModeHelper(this, listView));
     }
 
     @Override
@@ -61,29 +67,6 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
             clear.setEnabled(true);
             calculate.setEnabled(true);
         }
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_receipts, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -206,7 +189,31 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
     }
 
     /**
-     * A simple AsyncTask to add elements in the background
+     * This method performs context actions for the context menu
+     *
+     * @param itemId The menu item id
+     * @param position The position of the item in the list
+     * @return True if item is deleted; False otherwise
+     */
+    public boolean performAction(int itemId, int position) {
+        switch (itemId) {
+            case R.id.delete:
+                items.remove(position);
+                adapter.notifyDataSetChanged();
+                if(items.size() == 0) {
+                    clear.setEnabled(false);
+                    calculate.setEnabled(false);
+                }
+                return true;
+
+        }
+        return false;
+    }
+
+    /**
+     * A simple AsyncTask to add elements in the background. I added this class more
+     * to follow good design principles. In practice, starting a background thread to
+     * add a simple object to the list might not always be worth it
      */
     public class AddItemTask extends AsyncTask<Item, Void, Void> {
 
@@ -229,7 +236,9 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
     }
 
     /**
-     * A simple AsyncTask to delete the cart
+     * A simple AsyncTask to delete the cart in the background. I added this class more
+     * to follow good design principles. In practice, starting a background thread to
+     * delete a simple list might not always be worth it
      */
     public class DeleteCartTask extends AsyncTask<Void, Void, Void> {
 
@@ -248,5 +257,27 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
                 calculate.setEnabled(false);
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

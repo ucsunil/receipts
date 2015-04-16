@@ -7,19 +7,23 @@
     <string name="add">Add Item</string>
     <string name="clear">Clear Cart</string>
     <string name="show">Show Receipt</string>
+    <string name="about">About</string>
 
-    <string name="message">Add items to your cart and see the receipt!!</string>
+    <string name="message">Add items to your cart and see the receipt!! Long press items in cart
+                            to bring up the action bar context menu.</string>
 
     <string name="item">Item</string>
     <string name="qty">Qty.</string>
     <string name="quantity">Quantity</string>
     <string name="cost">Cost</string>
     <string name="type">Type</string>
-    <string name="exempted">Exempted</string>
+    <string name="exempted">Exempt</string>
     <string name="imported">Imported</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="context_title">Options</string>
 
     <string-array name="typeArray">
         <item>Books</item>
