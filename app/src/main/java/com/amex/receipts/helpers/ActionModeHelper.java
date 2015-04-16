@@ -13,6 +13,8 @@ import com.amex.receipts.ReceiptsActivity;
 
 /**
  * Created by Sunil on 4/15/2015.
+ *
+ * This class is used to handle the Context Menu
  */
 public class ActionModeHelper implements ActionMode.Callback, AdapterView.OnItemLongClickListener {
 

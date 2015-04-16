@@ -91,6 +91,12 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    /**
+     * This method acts as a listener to listen to the Item object saved and passed
+     * from the AddItemFragment.
+     *
+     * @param item The item to be saved
+     */
     @Override
     public void onItemSaved(Item item) {
         new AddItemTask().execute(item);

@@ -21,10 +21,9 @@ import junit.framework.Assert;
  *
  * This class contains unit tests for the UI layout of the ReceiptsActivity and verifies that
  * the AddItemFragment shows up as a DialogFragment. Full code coverage in
- * unit tests, while important, is quite time consuming and lengthy. I have used my discretion
+ * unit tests, while important, is quite a lengthy process. I have used my discretion
  * while writing these unit tests and have used them more as a proof of knowledge and to be
- * complete in the coding excercise than as a tool to actually test code which is going for
- * commercial production.
+ * complete in the coding exercise using a resaonable amount of time.
  */
 public class ReceiptsActivityTest extends ActivityInstrumentationTestCase2<ReceiptsActivity> {
 
