@@ -74,7 +74,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         switch(v.getId()) {
             case R.id.add:
                 addItem = AddItemFragment.getInstance();
-                addItem.show(getFragmentManager(), null);
+                addItem.show(getFragmentManager(), "addFragment");
                 break;
             case R.id.clear:
                 deleteCart();
@@ -83,6 +83,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
                 String receipt = calculateCart();
                 Bundle bundle = new Bundle();
                 bundle.putString("receipt", receipt);
+                bundle.putString("header", "Receipt");
 
                 showReceipt = ShowReceiptFragment.getInstance(bundle);
                 showReceipt.show(getFragmentManager(), null);
@@ -205,7 +206,6 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
                     calculate.setEnabled(false);
                 }
                 return true;
-
         }
         return false;
     }
@@ -263,7 +263,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -274,6 +274,16 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         if (id == R.id.add) {
             addItem = AddItemFragment.getInstance();
             addItem.show(getFragmentManager(), null);
+            return true;
+        }
+        if(id == R.id.about) {
+            Bundle bundle = new Bundle();
+            String aboutApp = "Add items to cart to generate a receipt. Long press cart items to "
+                    + "bring up the context menu.\n App developed for the interview at American Express.";
+            bundle.putString("header", "About");
+            bundle.putString("receipt", aboutApp);
+            ShowReceiptFragment fragment = ShowReceiptFragment.getInstance(bundle);
+            fragment.show(getFragmentManager(), null);
             return true;
         }
 

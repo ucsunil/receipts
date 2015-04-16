@@ -50,7 +50,7 @@ public class ShowReceiptFragment extends DialogFragment implements View.OnClickL
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setTitle(HEADER);
+        dialog.setTitle(getArguments().getString("header"));
         dialog.setCanceledOnTouchOutside(false);
         return dialog;
     }

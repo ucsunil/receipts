@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:Receipts="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/add"
         android:icon="@drawable/ic_action_new"
-        Receipts:showAsAction="always"
+        app:showAsAction="always"
         android:title="@string/add" />
     <item
         android:id="@+id/about"
         android:title="@string/about"
         android:orderInCategory="100"
-        Receipts:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>
