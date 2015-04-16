@@ -79,7 +79,7 @@ public class AddItemFragment extends DialogFragment implements View.OnClickListe
                 item.setItem(itemText.getText().toString());
                 item.setQuantity(Integer.parseInt(quantity.getText().toString()));
                 item.setCost(Double.parseDouble(cost.getText().toString()));
-                boolean isExempt = imported.getSelectedItem().toString().equals("Others") ?
+                boolean isExempt = type.getSelectedItem().toString().equals("Others") ?
                                         false : true;
                 item.setExempt(isExempt);
                 boolean isImport = imported.getSelectedItem().toString().equals("Yes") ?

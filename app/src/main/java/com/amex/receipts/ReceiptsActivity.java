@@ -18,6 +18,7 @@ import com.amex.receipts.models.Item;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -115,10 +116,22 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         new DeleteCartTask().execute();
     }
 
+    /**
+     * This method does the actual calculation of the cost and taxes of the items in
+     * the shopping cart and returns a String in the format required for this
+     * excercise.
+     *
+     * @return The result string object formatted for the manner to be displayed as
+     * requested in this excercise
+     */
     private String calculateCart() {
         double totalPrice = 0;
         double totalTax = 0;
 
+        // To ensure the results display in the manner expected
+        DecimalFormat dec = new DecimalFormat("#.00");
+
+        // Set the import tax
         double importTax = 0.05;
         double salesTax = 0.1;
         StringBuilder builder = new StringBuilder();
@@ -150,26 +163,51 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
             totalTax = totalTax + itemTax;
             totalPrice = totalPrice + roundedItemPrice;
 
+
             builder.append(quantity).append(" ").append(imported? "imported" : "")
-                    .append(" ").append(name).append(": ").append(roundedItemPrice)
+                    .append(" ").append(name).append(": ").append(dec.format(roundedItemPrice))
                     .append("\n");
         }
-        builder.append("Sales Taxes: ").append(totalTax).append("\n")
-                .append("Total: ").append(totalPrice);
+
+        // Ensure they are rounded to two decimal digits
+        totalTax = new BigDecimal(String.valueOf(totalTax)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        totalPrice = new BigDecimal(String.valueOf(totalPrice)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+
+        builder.append("Sales Taxes: ").append(dec.format(totalTax)).append("\n")
+                .append("Total: ").append(dec.format(totalPrice));
         return builder.toString();
     }
 
+    /**
+     * This method is used to round the double passed in the parameter to two places
+     * and return the result. Note that the rounding used here is HALF_EVEN which is
+     * also commonly known as Banker's rounding.
+     *
+     * @param input The double decimal value to be rounded
+     * @return The rounded double value
+     */
     private double roundPriceToTwoPlaces(double input) {
         BigDecimal value = new BigDecimal(String.valueOf(input));
-        return value.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+        return value.setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
 
+    /**
+     * This method is used to round the input double value up to the nearest
+     * 5 cent value. It does this by using BigDecimal values to retain
+     * precision.
+     *
+     * @param input The value to be rounded up to the nearest 5 cent value
+     * @return The nearest 5 cent value
+     */
     private double roundUpToNearestFiveCents(double input) {
         BigDecimal value = new BigDecimal(String.valueOf(input));
         BigDecimal result = new BigDecimal(Math.ceil(value.doubleValue()*20)/20);
         return result.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
+    /**
+     * A simple AsyncTask to add elements in the background
+     */
     public class AddItemTask extends AsyncTask<Item, Void, Void> {
 
         @Override
@@ -190,6 +228,9 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    /**
+     * A simple AsyncTask to delete the cart
+     */
     public class DeleteCartTask extends AsyncTask<Void, Void, Void> {
 
         @Override
