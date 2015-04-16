@@ -112,7 +112,7 @@ public class ReceiptsActivity extends Activity implements View.OnClickListener, 
         double totalTax = 0;
 
         // To ensure the results display in the manner expected
-        DecimalFormat dec = new DecimalFormat("#.00");
+        DecimalFormat dec = new DecimalFormat("0.00");
 
         // Set the import tax
         double importTax = 0.05;

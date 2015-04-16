@@ -4,7 +4,7 @@
     <item
         android:id="@+id/add"
         android:icon="@drawable/ic_action_new"
-        Receipts:showAsAction="ifRoom"
+        Receipts:showAsAction="always"
         android:title="@string/add" />
     <item
         android:id="@+id/about"
